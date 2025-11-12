@@ -1,13 +1,12 @@
 package testing.proiectcolectivback.Controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import testing.proiectcolectivback.DTO.IncomingBooksDto;
 import testing.proiectcolectivback.Domain.Book;
 import testing.proiectcolectivback.Service.BookService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -26,5 +25,11 @@ public class BookController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Book>> getAllBooks() {
+        List<Book> books = bookService.findAll();
+        return ResponseEntity.ok().body(books);
     }
 }

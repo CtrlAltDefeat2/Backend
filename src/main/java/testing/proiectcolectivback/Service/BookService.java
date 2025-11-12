@@ -6,6 +6,8 @@ import testing.proiectcolectivback.DTO.IncomingBooksDto;
 import testing.proiectcolectivback.Domain.Book;
 import testing.proiectcolectivback.Repository.BookRepository;
 
+import java.util.List;
+
 @Service
 public class BookService {
     private final BookRepository bookRepository;
@@ -23,5 +25,9 @@ public class BookService {
         System.out.println(dto.getBook_title() + " " + dto.getAuthors() + " " + dto.getEmotions());
         System.out.println(saved.getId() + " " + saved.getAuthors());
         return saved;
+    }
+
+    public List<Book> findAll() {
+        return bookRepository.findAll();
     }
 }
