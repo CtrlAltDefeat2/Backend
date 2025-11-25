@@ -1,4 +1,5 @@
 package testing.proiectcolectivback.Domain;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
@@ -20,6 +21,9 @@ public class Book {
 
     @Column(name="emotions", columnDefinition = "TEXT")
     private String emotionsJson;
+
+    @Column(name = "image_url", length = 1024)
+    private String imageUrl;
 
     @Transient
     private Map<String, Integer> emotions;
@@ -54,29 +58,19 @@ public class Book {
         return emotions;
     }
 
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    public String getAuthors() {
-        return authors;
-    }
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
-    public String getEmotionsJson() {
-        return emotionsJson;
-    }
-    public void setEmotionsJson(String emotions) {
-        this.emotionsJson = emotions;
-    }
-}
+    // -------- getters / setters --------
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getAuthors() { return authors; }
+    public void setAuthors(String authors) { this.authors = authors; }
+
+    public String getEmotionsJson() { return emotionsJson; }
+    public void setEmotionsJson(String emotionsJson) { this.emotionsJson = emotionsJson; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+}

@@ -11,8 +11,11 @@ import java.util.List;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
-    public BookService(BookRepository bookRepository) {
+    private final GoogleBooksCoverService coverService;
+
+    public BookService(BookRepository bookRepository,GoogleBooksCoverService coverService) {
         this.bookRepository = bookRepository;
+        this.coverService = coverService;
     }
 
     @Transactional
@@ -24,6 +27,8 @@ public class BookService {
         Book saved =  bookRepository.save(book);
         System.out.println(dto.getBook_title() + " " + dto.getAuthors() + " " + dto.getEmotions());
         System.out.println(saved.getId() + " " + saved.getAuthors());
+
+        coverService.updateCoverForBook(saved);
         return saved;
     }
 
