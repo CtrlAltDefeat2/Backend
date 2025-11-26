@@ -50,6 +50,8 @@ public class BookService {
         if(!exists) {
             userBookRepository.save(new UserBook(user, book));
         }
+
+        coverService.updateCoverForBook(book);
         return book;
     }
 
