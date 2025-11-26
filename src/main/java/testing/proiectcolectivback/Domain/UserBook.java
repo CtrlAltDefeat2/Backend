@@ -26,4 +26,7 @@ public class UserBook {
         this.user = user;
         this.book = book;
     }
+    public Book getBook() {
+        return book;
+    }
 }

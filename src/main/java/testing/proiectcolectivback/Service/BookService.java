@@ -57,12 +57,15 @@ public class BookService {
 
     public List<Book> getBooksForCurrentUser() {
         AppUser user = getCurrentUser();
-        return bookRepository.findBooksByUserId(user.getId());
+        return userBookRepository.findByUser(user)
+                .stream()
+                .map(UserBook::getBook)
+                .toList();
     }
 
     public void removeBook(Long bookId) {
         AppUser user = getCurrentUser();
-        userRepository.deleteByUserIdAndBookId(user.getId(), bookId);
+        userBookRepository.deleteByUserIdAndBookId(user.getId(), bookId);
     }
 
 }

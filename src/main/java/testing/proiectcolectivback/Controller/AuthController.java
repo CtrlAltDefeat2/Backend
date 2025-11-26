@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final SpotifyService spotifyService;
@@ -32,7 +33,6 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Missing accessToken");
         }
 
-        // 1. Verificăm token-ul la Spotify și luăm profilul
         Map<String, Object> profile = spotifyService.getCurrentUserProfile(req.getAccessToken());
         if (profile == null || profile.get("id") == null) {
             return ResponseEntity.status(401).body("Invalid Spotify token");
@@ -42,7 +42,6 @@ public class AuthController {
         String email = (String) profile.get("email"); // poate fi null dacă nu ai scope-ul de email
         String displayName = (String) profile.get("display_name");
 
-        // 2. Creăm / actualizăm userul în DB
         AppUser user = userRepository.findById(spotifyId)
                 .orElse(new AppUser());
         user.setId(spotifyId);
@@ -50,10 +49,8 @@ public class AuthController {
         user.setDisplayName(displayName);
         userRepository.save(user);
 
-        // 3. Generăm JWT-ul intern (subject = spotifyId)
         String jwt = jwtService.generateToken(spotifyId);
 
-        // 4. Răspuns către frontend
         return ResponseEntity.ok(Map.of(
                 "token", jwt,
                 "spotifyId", spotifyId,
