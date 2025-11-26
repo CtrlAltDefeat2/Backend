@@ -28,9 +28,16 @@ public class BookController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> books = bookService.findAll();
-        return ResponseEntity.ok().body(books);
+    // returnează doar cărțile userului logat
+    @GetMapping("/me")
+    public ResponseEntity<List<Book>> getMyBooks() {
+        return ResponseEntity.ok(bookService.getBooksForCurrentUser());
+    }
+
+
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<?> removeBook(@PathVariable Long bookId) {
+        bookService.removeBook(bookId);
+        return ResponseEntity.ok().build();
     }
 }
