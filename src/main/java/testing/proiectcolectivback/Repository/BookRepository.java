@@ -6,7 +6,7 @@ import testing.proiectcolectivback.Domain.Book;
 import java.util.List;
 import java.util.Optional;
 
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByImageUrlIsNullOrImageUrlEquals(String imageUrl);
     Optional<Book> findByTitle(String title);
 }

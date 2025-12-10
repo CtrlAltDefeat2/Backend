@@ -28,7 +28,6 @@ public class BookController {
         }
     }
 
-    // returnează doar cărțile userului logat
     @GetMapping("/me")
     public ResponseEntity<List<Book>> getMyBooks() {
         return ResponseEntity.ok(bookService.getBooksForCurrentUser());
