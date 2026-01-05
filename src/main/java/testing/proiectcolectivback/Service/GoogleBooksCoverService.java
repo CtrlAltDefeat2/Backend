@@ -37,7 +37,6 @@ public class GoogleBooksCoverService {
      * Asta o chemi imediat după ce ai salvat cartea.
      */
     public void updateCoverForBook(Book book) {
-        // dacă deja are cover (eventual îl setezi manual), nu mai facem nimic
         if (book.getImageUrl() != null && !book.getImageUrl().isBlank()) {
             return;
         }
