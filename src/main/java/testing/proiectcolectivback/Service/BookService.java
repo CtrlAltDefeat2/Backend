@@ -28,7 +28,7 @@ public class BookService {
         System.out.println(dto.getBook_title() + " " + dto.getAuthors() + " " + dto.getEmotions());
         System.out.println(saved.getId() + " " + saved.getAuthors());
 
-//        coverService.updateCoverForBook(saved);
+        coverService.updateCoverForBook(saved);
         return saved;
     }
 

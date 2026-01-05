@@ -7,6 +7,4 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findByImageUrlIsNullOrImageUrlEquals(String imageUrl);
-
-    List<Book> findByTitleAndAuthors(String title, String authors);
 }

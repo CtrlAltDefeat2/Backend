@@ -15,7 +15,6 @@ import testing.proiectcolectivback.DTO.ImageLinks;
 import testing.proiectcolectivback.Repository.BookRepository;
 
 import java.net.URI;
-import java.util.List;
 
 @Service
 public class GoogleBooksCoverService {
@@ -34,64 +33,84 @@ public class GoogleBooksCoverService {
         this.apiKey = apiKey;
     }
 
-    public Book findOrCreateWithCover(String title, String authors, double match) {
-        List<Book> existingBooks = bookRepository.findByTitleAndAuthors(title, authors);
-        if (!existingBooks.isEmpty()) {
-            return existingBooks.getFirst();
+    /**
+     * Asta o chemi imediat după ce ai salvat cartea.
+     */
+    public void updateCoverForBook(Book book) {
+        if (book.getImageUrl() != null && !book.getImageUrl().isBlank()) {
+            return;
+        }
+        if (book.getTitle() == null || book.getTitle().isBlank()) {
+            return;
         }
 
-        Book newBook = new Book(title, authors, match);
+        String q = buildQuery(book);
 
-        if (title == null || title.isBlank()) {
-            newBook.setImageUrl("https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png");
-        } else {
-            String q = buildQuery(newBook);
-            URI uri = UriComponentsBuilder
-                    .fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
-                    .queryParam("q", q)
-                    .queryParam("maxResults", 1)
-                    .queryParam("key", apiKey)
-                    .build()
-                    .encode()
-                    .toUri();
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl("https://www.googleapis.com/books/v1/volumes")
+                .queryParam("q", q)
+                .queryParam("maxResults", 1)
+                .queryParam("key", apiKey)
+                .build()
+                .encode()
+                .toUri();
 
-            try {
-                GoogleBooksResponse response = restTemplate.getForObject(uri, GoogleBooksResponse.class);
-                if (response != null && response.getItems() != null && !response.getItems().isEmpty()) {
-                    GoogleBookItem item = response.getItems().get(0);
-                    VolumeInfo info = item.getVolumeInfo();
-                    if (info != null && info.getImageLinks() != null) {
-                        ImageLinks links = info.getImageLinks();
-                        String cover = links.getThumbnail() != null ? links.getThumbnail() : links.getSmallThumbnail();
-                        if (cover != null) {
-                            if (cover.startsWith("http://")) {
-                                cover = cover.replace("http://", "https://");
-                            }
-                            newBook.setImageUrl(cover);
-                        } else {
-                            newBook.setImageUrl("https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png");
-                        }
-                    } else {
-                        newBook.setImageUrl("https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png");
-                    }
-                } else {
-                    newBook.setImageUrl("https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png");
-                }
-            } catch (Exception e) {
-                log.warn("Error calling Google Books for '{}': {}", newBook.getTitle(), e.getMessage());
-                newBook.setImageUrl("https://www.freeiconspng.com/thumbs/question-mark-icon/black-question-mark-icon-clip-art-10.png");
-            }
+
+        GoogleBooksResponse response;
+        try {
+            response = restTemplate.getForObject(uri, GoogleBooksResponse.class);
+        } catch (Exception e) {
+            log.warn("Error calling Google Books for '{}': {}", book.getTitle(), e.getMessage());
+            return;
         }
 
-        bookRepository.save(newBook);
-        log.info("Saved book with cover: title='{}', imageUrl={}", newBook.getTitle(), newBook.getImageUrl());
-        return newBook;
+        if (response == null || response.getItems() == null || response.getItems().isEmpty()) {
+            log.info("No Google Books results for '{}'", book.getTitle());
+            return;
+        }
+
+        GoogleBookItem item = response.getItems().get(0);
+        VolumeInfo info = item.getVolumeInfo();
+        if (info == null || info.getImageLinks() == null) {
+            log.info("No image links for '{}'", book.getTitle());
+            return;
+        }
+
+        ImageLinks links = info.getImageLinks();
+        String cover = links.getThumbnail() != null ? links.getThumbnail() : links.getSmallThumbnail();
+        if (cover == null) {
+            log.info("No thumbnail for '{}'", book.getTitle());
+            return;
+        }
+
+        if (cover.startsWith("http://")) {
+            cover = cover.replace("http://", "https://");
+        }
+
+        book.setImageUrl(cover);
+        bookRepository.save(book);
+
+        log.info("Saved cover for book id={} title='{}' imageUrl={}",
+                book.getId(), book.getTitle(), book.getImageUrl());
     }
 
     private String buildQuery(Book book) {
         String titlePart = "intitle:" + book.getTitle();
-        String authorPart = (book.getAuthors() != null && !book.getAuthors().isBlank()) ? " inauthor:" + book.getAuthors() : "";
+        String authorPart = "";
+
+        if (book.getAuthors() != null && !book.getAuthors().isBlank()) {
+            // spațiu normal, UriComponentsBuilder îl encodează în + sau %20
+            authorPart = " inauthor:" + book.getAuthors();
+        }
+
+        // Ex: "intitle:Atomic Habits inauthor:James Clear"
         return titlePart + authorPart;
     }
-}
 
+
+
+
+    private String quote(String s) {
+        return s;
+    }
+}
