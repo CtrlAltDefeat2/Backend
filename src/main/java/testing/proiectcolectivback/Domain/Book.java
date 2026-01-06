@@ -28,12 +28,21 @@ public class Book {
     @Transient
     private Map<String, Integer> emotions;
 
+    @Transient
+    private Double match;
+
     public Book() {}
 
     public Book(String title, String author, Map<String, Integer> emotions) {
         this.title = title;
         this.authors = author;
         setEmotions(emotions);
+    }
+
+    public Book(String title, String author, Double match) {
+        this.title = title;
+        this.authors = author;
+        this.match = match;
     }
 
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -73,4 +82,7 @@ public class Book {
 
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public Double getMatch() { return match; }
+    public void setMatch(Double match) { this.match = match; }
 }
