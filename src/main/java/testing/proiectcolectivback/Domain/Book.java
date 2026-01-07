@@ -13,6 +13,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name="titlu", nullable = false)
     private String title;
 
@@ -67,7 +68,6 @@ public class Book {
         return emotions;
     }
 
-    // -------- getters / setters --------
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
