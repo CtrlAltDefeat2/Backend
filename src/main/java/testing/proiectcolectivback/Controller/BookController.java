@@ -18,15 +18,15 @@ public class BookController {
         this.bookService = svc;
     }
 
-    @PostMapping
-    public ResponseEntity<?> saveBookData(@RequestBody IncomingBooksDto dto) {
-        try {
-            Book saved = bookService.saveFromDto(dto);
-            return ResponseEntity.ok().body(saved);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping
+//    public ResponseEntity<?> saveBookData(@RequestBody IncomingBooksDto dto) {
+//        try {
+//            Book saved = bookService.saveFromDto(dto);
+//            return ResponseEntity.ok().body(saved);
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//    }
 
     @GetMapping("/me")
     public ResponseEntity<List<Book>> getMyBooks() {

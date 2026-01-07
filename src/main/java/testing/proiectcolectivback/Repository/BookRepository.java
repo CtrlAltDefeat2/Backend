@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByImageUrlIsNullOrImageUrlEquals(String imageUrl);
-    Optional<Book> findByTitle(String title);
+
+    List<Book> findByTitleAndAuthors(String title, String authors);
 }

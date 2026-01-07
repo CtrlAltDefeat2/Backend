@@ -34,26 +34,26 @@ public class BookService {
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found" + userId));
     }
 
-    @Transactional
-    public Book saveFromDto(IncomingBooksDto dto) {
-        if(dto == null || dto.getBook_title() == null) {
-            throw new IllegalArgumentException("Book title cannot be null");
-        }
-        Optional<Book> existing = bookRepository.findByTitle(dto.getBook_title());
-        Book book = existing.orElseGet(() ->{
-            Book b = new Book(dto.getBook_title(), dto.getAuthors(), dto.getEmotions());
-            return bookRepository.save(b);
-        });
-        AppUser user = getCurrentUser();
-        boolean exists  =userBookRepository.existsByUserAndBook(user, book);
-
-        if(!exists) {
-            userBookRepository.save(new UserBook(user, book));
-        }
-
-        coverService.updateCoverForBook(book);
-        return book;
-    }
+//    @Transactional
+//    public Book saveFromDto(IncomingBooksDto dto) {
+//        if(dto == null || dto.getBook_title() == null) {
+//            throw new IllegalArgumentException("Book title cannot be null");
+//        }
+//        Optional<Book> existing = bookRepository.findByTitle(dto.getBook_title());
+//        Book book = existing.orElseGet(() ->{
+//            Book b = new Book(dto.getBook_title(), dto.getAuthors(), dto.getEmotions());
+//            return bookRepository.save(b);
+//        });
+//        AppUser user = getCurrentUser();
+//        boolean exists  =userBookRepository.existsByUserAndBook(user, book);
+//
+//        if(!exists) {
+//            userBookRepository.save(new UserBook(user, book));
+//        }
+//
+//        coverService.updateCoverForBook(book);
+//        return book;
+//    }
 
     public List<Book> getBooksForCurrentUser() {
         AppUser user = getCurrentUser();

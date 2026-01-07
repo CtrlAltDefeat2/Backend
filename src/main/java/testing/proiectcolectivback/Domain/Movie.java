@@ -33,6 +33,12 @@ public class Movie {
 
     public Movie() {}
 
+    public Movie(String title, String director, Double matchScore) {
+        this.title = title;
+        this.director = director;
+        this.matchScore = matchScore;
+    }
+
     public Movie(String title, String director, String year, String cover, Double matchScore, String reason, String movieUrl) {
         this.title = title;
         this.director = director;
