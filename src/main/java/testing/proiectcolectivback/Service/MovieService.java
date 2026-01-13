@@ -1,5 +1,6 @@
 package testing.proiectcolectivback.Service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import testing.proiectcolectivback.Domain.AppUser;
@@ -62,5 +63,15 @@ public class MovieService {
                 .orElseThrow(() -> new RuntimeException("This movie is not in the list"));
 
         userMovieRepository.delete(link);
+    }
+
+    @Transactional
+    public boolean toggleWatched(Long movieId) {
+        AppUser user = getCurrentUser();
+        UserMovie userMovie = userMovieRepository.findByUserIdAndMovieId(user.getId(), movieId)
+                .orElseThrow(() -> new RuntimeException("UserMovie not found for userId: " + user.getId() + " and movieId: " + movieId));
+        userMovie.setWatched(!userMovie.isWatched());
+        userMovieRepository.save(userMovie);
+        return userMovie.isWatched();
     }
 }

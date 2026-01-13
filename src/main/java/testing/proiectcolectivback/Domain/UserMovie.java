@@ -21,6 +21,8 @@ public class UserMovie {
 
     private LocalDateTime savedAt = LocalDateTime.now();
 
+    private boolean watched = false;
+
     public UserMovie() {}
 
     public UserMovie(AppUser user, Movie movie) {
@@ -44,5 +46,13 @@ public class UserMovie {
     }
     public void setMovie(Movie movie) {
         this.movie = movie;
+    }
+
+    public boolean isWatched() {
+        return watched;
+    }
+
+    public void setWatched(boolean watched) {
+        this.watched = watched;
     }
 }

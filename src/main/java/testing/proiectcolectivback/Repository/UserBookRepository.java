@@ -6,9 +6,11 @@ import testing.proiectcolectivback.Domain.Book;
 import testing.proiectcolectivback.Domain.UserBook;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserBookRepository extends JpaRepository<UserBook, Long> {
     List<UserBook> findByUser(AppUser user);
     boolean existsByUserAndBook(AppUser user, Book book);
     void deleteByUserIdAndBookId(String userId, Long bookId);
+    Optional<UserBook> findByUserIdAndBookId(String userId, Long bookId);
 }

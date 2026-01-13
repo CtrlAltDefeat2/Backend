@@ -39,4 +39,14 @@ public class BookController {
         bookService.removeBook(bookId);
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/toggle-read")
+    public ResponseEntity<?> toggleRead(@RequestParam Long bookId) {
+        try {
+            boolean newStatus = bookService.toggleRead(bookId);
+            return ResponseEntity.ok().body(newStatus);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

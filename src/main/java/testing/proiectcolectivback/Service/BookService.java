@@ -68,4 +68,14 @@ public class BookService {
         userBookRepository.deleteByUserIdAndBookId(user.getId(), bookId);
     }
 
+    @Transactional
+    public boolean toggleRead(Long bookId) {
+        AppUser user = getCurrentUser();
+        UserBook userBook = userBookRepository.findByUserIdAndBookId(user.getId(), bookId)
+                .orElseThrow(() -> new RuntimeException("UserBook not found for userId: " + user.getId() + " and bookId: " + bookId));
+        userBook.setRead(!userBook.isRead());
+        userBookRepository.save(userBook);
+        return userBook.isRead();
+    }
+
 }

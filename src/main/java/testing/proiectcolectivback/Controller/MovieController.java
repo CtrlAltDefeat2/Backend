@@ -33,4 +33,14 @@ public class MovieController {
         movieService.removeMovie(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PatchMapping("/toggle-watched")
+    public ResponseEntity<?> toggleWatched(@RequestParam Long movieId) {
+        try {
+            boolean newStatus = movieService.toggleWatched(movieId);
+            return ResponseEntity.ok().body(newStatus);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

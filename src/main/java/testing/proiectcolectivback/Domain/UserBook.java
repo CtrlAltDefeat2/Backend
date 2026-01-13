@@ -20,6 +20,9 @@ public class UserBook {
     private Book book;
 
     private LocalDateTime savedAt = LocalDateTime.now();
+
+    private boolean read = false;
+
     public UserBook() {}
 
     public UserBook(AppUser user, Book book) {
@@ -28,5 +31,13 @@ public class UserBook {
     }
     public Book getBook() {
         return book;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }
