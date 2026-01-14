@@ -3,6 +3,7 @@ package testing.proiectcolectivback.Service;
 import jakarta.transaction.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import testing.proiectcolectivback.DTO.UserMovieDto;
 import testing.proiectcolectivback.Domain.AppUser;
 import testing.proiectcolectivback.Domain.Movie;
 import testing.proiectcolectivback.Domain.UserMovie;
@@ -30,12 +31,12 @@ public class MovieService {
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found" + userId));
     }
 
-    public List<Movie> getMyMovies() {
+    public List<UserMovieDto> getMyMovies() {
         AppUser user = getCurrentUser();
 
         return userMovieRepository.findByUser(user)
                 .stream()
-                .map(UserMovie::getMovie)
+                .map(UserMovieDto::fromUserMovie)
                 .collect(Collectors.toList());
     }
 

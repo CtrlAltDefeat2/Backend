@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import testing.proiectcolectivback.DTO.IncomingBooksDto;
+import testing.proiectcolectivback.DTO.UserBookDto;
 import testing.proiectcolectivback.Domain.AppUser;
 import testing.proiectcolectivback.Domain.Book;
 import testing.proiectcolectivback.Domain.UserBook;
@@ -55,11 +56,11 @@ public class BookService {
 //        return book;
 //    }
 
-    public List<Book> getBooksForCurrentUser() {
+    public List<UserBookDto> getBooksForCurrentUser() {
         AppUser user = getCurrentUser();
         return userBookRepository.findByUser(user)
                 .stream()
-                .map(UserBook::getBook)
+                .map(UserBookDto::fromUserBook)
                 .toList();
     }
 

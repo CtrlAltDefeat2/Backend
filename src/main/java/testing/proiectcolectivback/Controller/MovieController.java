@@ -3,6 +3,7 @@ package testing.proiectcolectivback.Controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import testing.proiectcolectivback.DTO.UserMovieDto;
 import testing.proiectcolectivback.Domain.Movie;
 import testing.proiectcolectivback.Service.MovieService;
 
@@ -18,7 +19,7 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<Movie> getMyMovies() {
+    public List<UserMovieDto> getMyMovies() {
         return movieService.getMyMovies();
     }
 

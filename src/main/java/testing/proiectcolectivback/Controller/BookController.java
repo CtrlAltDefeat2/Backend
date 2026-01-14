@@ -3,6 +3,7 @@ package testing.proiectcolectivback.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testing.proiectcolectivback.DTO.IncomingBooksDto;
+import testing.proiectcolectivback.DTO.UserBookDto;
 import testing.proiectcolectivback.Domain.Book;
 import testing.proiectcolectivback.Service.BookService;
 
@@ -29,7 +30,7 @@ public class BookController {
 //    }
 
     @GetMapping("/me")
-    public ResponseEntity<List<Book>> getMyBooks() {
+    public ResponseEntity<List<UserBookDto>> getMyBooks() {
         return ResponseEntity.ok(bookService.getBooksForCurrentUser());
     }
 
