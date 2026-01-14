@@ -16,4 +16,6 @@ public interface UserMovieRepository extends JpaRepository<UserMovie, Long> {
     Optional<UserMovie> findByUserAndMovie(AppUser user, Movie movie);
 
     Optional<UserMovie> findByUserIdAndMovieId(String userId, Long movieId);
+
+    void deleteByUser(AppUser user);
 }

@@ -75,4 +75,10 @@ public class MovieService {
         userMovieRepository.save(userMovie);
         return userMovie.isWatched();
     }
+
+    @Transactional
+    public void removeAllMovies() {
+        AppUser user = getCurrentUser();
+        userMovieRepository.deleteByUser(user);
+    }
 }

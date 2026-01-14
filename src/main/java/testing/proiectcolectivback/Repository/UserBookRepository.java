@@ -13,4 +13,5 @@ public interface UserBookRepository extends JpaRepository<UserBook, Long> {
     boolean existsByUserAndBook(AppUser user, Book book);
     void deleteByUserIdAndBookId(String userId, Long bookId);
     Optional<UserBook> findByUserIdAndBookId(String userId, Long bookId);
+    void deleteByUser(AppUser user);
 }

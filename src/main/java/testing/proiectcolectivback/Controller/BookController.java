@@ -34,6 +34,11 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBooksForCurrentUser());
     }
 
+    @PostMapping
+    public ResponseEntity<Book> saveBook(@RequestBody IncomingBooksDto dto) {
+        Book saved = bookService.saveFromDto(dto);
+        return ResponseEntity.ok(saved);
+    }
 
     @DeleteMapping("/{bookId}")
     public ResponseEntity<?> removeBook(@PathVariable Long bookId) {
@@ -49,5 +54,11 @@ public class BookController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> clearReadingList() {
+        bookService.removeAllBooks();
+        return ResponseEntity.noContent().build();
     }
 }

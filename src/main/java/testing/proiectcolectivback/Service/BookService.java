@@ -35,26 +35,25 @@ public class BookService {
         return userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User Not Found" + userId));
     }
 
-//    @Transactional
-//    public Book saveFromDto(IncomingBooksDto dto) {
-//        if(dto == null || dto.getBook_title() == null) {
-//            throw new IllegalArgumentException("Book title cannot be null");
-//        }
-//        Optional<Book> existing = bookRepository.findByTitle(dto.getBook_title());
-//        Book book = existing.orElseGet(() ->{
-//            Book b = new Book(dto.getBook_title(), dto.getAuthors(), dto.getEmotions());
-//            return bookRepository.save(b);
-//        });
-//        AppUser user = getCurrentUser();
-//        boolean exists  =userBookRepository.existsByUserAndBook(user, book);
-//
-//        if(!exists) {
-//            userBookRepository.save(new UserBook(user, book));
-//        }
-//
-//        coverService.updateCoverForBook(book);
-//        return book;
-//    }
+    @Transactional
+    public Book saveFromDto(IncomingBooksDto dto) {
+        Book book = bookRepository.findByTitle(dto.getTitle())
+                .orElseGet(() -> {
+                    Book b = new Book();
+                    b.setTitle(dto.getTitle());
+                    b.setAuthors(dto.getAuthors());
+                    b.setImageUrl(dto.getCover());
+                    return bookRepository.save(b);
+                });
+
+        AppUser user = getCurrentUser();
+
+        if (!userBookRepository.existsByUserAndBook(user, book)) {
+            UserBook userBook = new UserBook(user, book);
+            userBookRepository.save(userBook);
+        }
+        return book;
+    }
 
     public List<UserBookDto> getBooksForCurrentUser() {
         AppUser user = getCurrentUser();
@@ -64,6 +63,7 @@ public class BookService {
                 .toList();
     }
 
+    @Transactional
     public void removeBook(Long bookId) {
         AppUser user = getCurrentUser();
         userBookRepository.deleteByUserIdAndBookId(user.getId(), bookId);
@@ -79,4 +79,9 @@ public class BookService {
         return userBook.isRead();
     }
 
+    @Transactional
+    public void removeAllBooks() {
+        AppUser user = getCurrentUser();
+        userBookRepository.deleteByUser(user);
+    }
 }

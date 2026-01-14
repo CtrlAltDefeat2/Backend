@@ -1,28 +1,17 @@
 package testing.proiectcolectivback.DTO;
 
-import java.util.Map;
-
 public class IncomingBooksDto {
-    private String book_title;
+    private String title;
     private String authors;
-    private Map<String, Integer> emotions;
+    private String cover;
+    private String url;
 
-    public String getBook_title() {
-        return book_title;
-    }
-    public void setBook_title(String book_title) {
-        this.book_title = book_title;
-    }
-    public String getAuthors() {
-        return authors;
-    }
-    public void setAuthors(String authors) {
-        this.authors = authors;
-    }
-    public Map<String, Integer> getEmotions() {
-        return emotions;
-    }
-    public void setEmotions(Map<String, Integer> emotions) {
-        this.emotions = emotions;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+    public String getAuthors() { return authors; }
+    public void setAuthors(String authors) { this.authors = authors; }
+    public String getCover() { return cover; }
+    public void setCover(String cover) { this.cover = cover; }
+    public String getUrl() { return url; }
+    public void setUrl(String url) { this.url = url; }
 }
