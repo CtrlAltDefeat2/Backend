@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/movies")
+@CrossOrigin(origins = "*")
 public class MovieController {
     private final MovieService movieService;
 
@@ -42,5 +43,11 @@ public class MovieController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> clearWatchList() {
+        movieService.removeAllMovies();
+        return ResponseEntity.noContent().build();
     }
 }
